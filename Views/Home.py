@@ -1,41 +1,120 @@
 import dash_html_components as html
-import dash_core_components as dcc
 import dash_bootstrap_components as dbc
-import plotly.express as px
-import pandas as pd
-from scripts.utils import generate_card
+import dash
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
-df = pd.read_csv('https://gist.githubusercontent.com/chriddyp/5d1ea79569ed194d432e56108a04d188/raw/a9f9e8076b837d541398e999dcbac2b2826a81f8/gdp-life-exp-2007.csv')
+PLOTLY_LOGO = "/assets/img/medellin.jpg"
+page = html.Div([
 
-fig = px.scatter(df, x="gdp per capita", y="life expectancy",
-                 size="population", color="continent", hover_name="country",
-                 log_x=True, size_max=60)
+        html.Img(src=app.get_asset_url(PLOTLY_LOGO), style={'background-image': 'url("/assets/img/medellin.jpg")',
+                  'opacity': '0.6', '-ms-background-size': 'contain', 'padding':'100px',
+                                        'background-repeat': 'no-repeat',
+                                        'background-size': 'cover',
+                                         'background-position': 'center',
+                                        'width':'100%',
+                                        'height':'auto',
+                                        'display':'block'
+        }),
 
-page = dbc.Container(
-    [
-        html.Div(className = "col-md-8", children = [
-            generate_card("Hola", "Cuerpo", dcc.Graph(figure=fig))
-        ]),
-        html.H1("Iris k-means clustering"),
-        html.Hr(),
-        dbc.Row(
-            [
-                dbc.Col(html.Div(dcc.Graph(figure=fig)), md=6),
-                dbc.Col(html.Div(dcc.Graph(
-                    id='example-graph',
-                figure={
-                    'data': [
-                            {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                            {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-                            {'x': [1, 2, 3], 'y': [1, 3, 6], 'type': 'bar', 'name': u'Colombia'}
-                            ],
-                    'layout': {
-                        'title': 'Dash Data Visualization PRUEBA'
-                    }
-        })), md=6),],
-            align="center",
-        ),
-    ],
-    fluid=True,
-)
+        dbc.Row([
+            dbc.Col(html.H1(
+                children="Teaté Colombia S.A.S.",
+                className="text-center",
+                style={'font-size': '36px', 'color': '4d4d4d',
+                       'text-shadow': '2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3)'})
+                    , className="mb-5 mt-0 p-0")  # PAGE TITLE
+        ], style={'padding': '0', 'margin': '0', 'padding-left': '150px'}),
+
+    dbc.Row([
+        dbc.Col(html.H5(
+            children="The neighborhood shops are one of the most important sales "
+                     "channels in Colombia for fast-moving consumer goods, representing more than 50% of the total sales. "
+                     "Moreover, four out of five Colombian households buy their basic foods from these types of stores due to "
+                     "their offer of low prices and convenient products. However, these small businesses are highly inefficient"
+                     "these businesses and their suppliers need tools that allow them to achieve greater efficiency in their operations. "
+                     "One of such tools is to have an accurate sales forecast that can help both the neighborhood shops and the product manufacturers "
+                     "optimize their supply chains and provide the required products at the right moment. This would allow them to achieve greater service "
+                     "levels and minimize their losses.",
+
+
+            style={'font-size': '20px', 'color': '4d4d4d',
+                   'text-shadow': '2px 8px 6px rgba(0,0,0,0.2), 0px -5px '
+                                  '35px rgba(255,255,255,0.3)'}),
+             className="mb-5 mt-0 p-0")  # PAGE TITLE
+    ], style={'padding': '0', 'margin': '0', 'padding-left': '300px'}),
+
+
+    dbc.Row([
+
+        dbc.Col(dbc.Card(children=[
+            html.H5(children='Maps interaction with store geolocation',
+                    className="text-center"),
+
+            dbc.Button(
+                html.Span([html.I(className=""), "Geolocation"]),
+                href="",
+                target="_blank",
+                color="primary",
+                className="mt-3"),
+
+            ],
+                         body=True, color="dark", outline=True)
+                , width=2, className="mb-1"),
+
+        dbc.Col(dbc.Card(children=[
+
+            html.H5(
+            children='Analysis of store insights',
+            className="text-center"),
+
+               dbc.Button(
+                   html.Span([html.I(
+                       className=""),
+                              "Store Analysis"]),
+                   href="",
+                   target="_blank",
+                   color="primary",
+                   className="mt-3"),  # LINK TO OUR REPORT
+
+               ],
+                         body=True, color="dark", outline=True)
+                , width=2, className="mb-2"),
+
+        dbc.Col(dbc.Card(children=[
+            html.H5(children='Sales forecst by product',
+                    className="text-center"),
+
+            dbc.Button(
+                html.Span([html.I(className=""), "Forecast"]),
+                href="",
+                target="_blank",
+                color="primary",
+                className="mt-3"),
+
+        ],
+            body=True, color="dark", outline=True)
+            , width=2, className="mb-3"),
+
+        dbc.Col(dbc.Card(children=[
+            html.H5(children='Overall business analysis',
+                    className="text-center"),
+
+            dbc.Button(
+                html.Span([html.I(className=""), "Data Exploration"]),
+                href="",
+                target="_blank",
+                color="primary",
+                className="mt-3"),
+
+        ],
+            body=True, color="dark", outline=True)
+            , width=2, className="mb-4"),
+
+
+    ], style={'padding': '0', 'margin': '0', 'padding-left': '150px'}, className="mb-5", justify="center"),
+
+])
+
+
