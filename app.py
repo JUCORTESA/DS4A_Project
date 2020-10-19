@@ -1,191 +1,183 @@
-"""import dash
-import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
-
-
-import codecs
-from scripts.utils import *
-from Views.Home import page
-from Views.Analytics import hola
-
-template=codecs.open("Views/template.html", 'r') #Load HTML FILE
-prueba =codecs.open("Views/prueba.html", 'r')
-
-app = dash.Dash(__name__)
-
-
-app.title = 'DS4A'
-app.index_string = template.read()
-
-app.layout = page
-
-if __name__ == '__main__':
-    app.run_server(debug=True)"""
-
-# package imports
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Input, Output, State
-from dash import no_update
-from flask import session, copy_current_request_context
+import dash_html_components as html
 import codecs
+from maindash import app
+from Views import Geolocation
 
-# local imports
-from auth import authenticate_user, validate_login_session
-from server import app, server
-from Views.Home import page
-
-
-# login layout content
-def login_layout():
-    return html.Div(
-        [
-            dcc.Location(id='login-url', pathname='/login', refresh=False),
-            dbc.Container(
-                [
-                    dbc.Row(
-                        dbc.Col(
-                            dbc.Card(
-                                [
-                                    html.H4('Login', className='card-title'),
-                                    dbc.Input(id='login-email',
-                                              placeholder='User'),
-                                    dbc.Input(id='login-password',
-                                              placeholder='Assigned password',
-                                              type='password'),
-                                    dbc.Button('Submit', id='login-button',
-                                               color='danger', block=True),
-                                    html.Br(),
-                                    html.Div(id='login-alert')
-                                ],
-                                body=True
-                            ),
-                            width=6
-                        ),
-                        justify='center'
-                    )
-                ]
-            )
-        ]
-    )
+template=codecs.open("Views/template.html", 'r') #Load HTML FILE
 
 
-# home layout content
-@validate_login_session
-def app_layout():
-    template = codecs.open("Views/template.html", 'r')  # Load HTML FILE
+if __name__ == '__main__':
     app.title = 'DS4A'
     app.index_string = template.read()
-    return page, \
-            html.Div([
-                dcc.Location(id='home-url', pathname='/home'),
-                dbc.Container(
-                    [
+    app.layout = Geolocation.page
+    app.run_server(debug=True)
 
-                        html.Br(),
+# # package imports
+# import dash
+# import dash_bootstrap_components as dbc
+# import dash_html_components as html
+# import dash_core_components as dcc
+# from dash.dependencies import Input, Output, State
+# from dash import no_update
+# from flask import session, copy_current_request_context
+# import codecs
 
-                        dbc.Row(
-                            dbc.Col(
-                                dbc.Button('Logout', id='logout-button',
-                                           color='danger', block=True,
-                                           size='sm'),
-                                width=4
-                            ),
-                            justify='center'
-                        ),
-
-                        html.Br()
-                    ],
-                )
-            ]
-            )
+# # local imports
+# from auth import authenticate_user, validate_login_session
+# from server import app, server
+# from Views.Home import page
 
 
-# main app layout
-app.layout = html.Div(
-    [
-        dcc.Location(id='url', refresh=False),
-        html.Div(
-            login_layout(),
-            id='page-content'
-        ),
-    ]
-)
+# # login layout content
+# def login_layout():
+#     return html.Div(
+#         [
+#             dcc.Location(id='login-url', pathname='/login', refresh=False),
+#             dbc.Container(
+#                 [
+#                     dbc.Row(
+#                         dbc.Col(
+#                             dbc.Card(
+#                                 [
+#                                     html.H4('Login', className='card-title'),
+#                                     dbc.Input(id='login-email',
+#                                               placeholder='User'),
+#                                     dbc.Input(id='login-password',
+#                                               placeholder='Assigned password',
+#                                               type='password'),
+#                                     dbc.Button('Submit', id='login-button',
+#                                                color='danger', block=True),
+#                                     html.Br(),
+#                                     html.Div(id='login-alert')
+#                                 ],
+#                                 body=True
+#                             ),
+#                             width=6
+#                         ),
+#                         justify='center'
+#                     )
+#                 ]
+#             )
+#         ]
+#     )
 
 
-###############################################################################
-# utilities
-###############################################################################
+# # home layout content
+# @validate_login_session
+# def app_layout():
+#     template = codecs.open("Views/template.html", 'r')  # Load HTML FILE
+#     app.title = 'DS4A'
+#     app.index_string = template.read()
+#     return page, \
+#             html.Div([
+#                 dcc.Location(id='home-url', pathname='/home'),
+#                 dbc.Container(
+#                     [
 
-# router
-@app.callback(
-    Output('page-content', 'children'),
-    [Input('url', 'pathname')]
-)
-def router(url):
-    if url == '/home':
-        return app_layout()
-    elif url == '/login':
-        return login_layout()
-    else:
-        return login_layout()
+#                         html.Br(),
 
+#                         dbc.Row(
+#                             dbc.Col(
+#                                 dbc.Button('Logout', id='logout-button',
+#                                            color='danger', block=True,
+#                                            size='sm'),
+#                                 width=4
+#                             ),
+#                             justify='center'
+#                         ),
 
-# authenticate
-@app.callback(
-    [Output('url', 'pathname'),
-     Output('login-alert', 'children')],
-    [Input('login-button', 'n_clicks')],
-    [State('login-email', 'value'),
-     State('login-password', 'value')])
-def login_auth(n_clicks, email, pw):
-    '''
-    check credentials
-    if correct, authenticate the session
-    otherwise, authenticate the session and send user to login
-    '''
-    if n_clicks is None or n_clicks == 0:
-        return no_update, no_update
-    credentials = {'user': email, "password": pw}
-    if authenticate_user(credentials):
-        session['authed'] = True
-        return '/home', ''
-    session['authed'] = False
-    return no_update, dbc.Alert('Incorrect credentials.', color='danger',
-                                dismissable=True)
+#                         html.Br()
+#                     ],
+#                 )
+#             ]
+#             )
 
 
-@app.callback(
-    Output('home-url', 'pathname'),
-    [Input('logout-button', 'n_clicks')]
-)
-def logout_(n_clicks):
-    '''clear the session and send user to login'''
-    if n_clicks is None or n_clicks == 0:
-        return no_update
-    session['authed'] = False
-    return '/login'
+# # main app layout
+# app.layout = html.Div(
+#     [
+#         dcc.Location(id='url', refresh=False),
+#         html.Div(
+#             login_layout(),
+#             id='page-content'
+#         ),
+#     ]
+# )
 
 
-###############################################################################
-# callbacks
-###############################################################################
+# ###############################################################################
+# # utilities
+# ###############################################################################
+
+# # router
+# @app.callback(
+#     Output('page-content', 'children'),
+#     [Input('url', 'pathname')]
+# )
+# def router(url):
+#     if url == '/home':
+#         return app_layout()
+#     elif url == '/login':
+#         return login_layout()
+#     else:
+#         return login_layout()
+
+
+# # authenticate
+# @app.callback(
+#     [Output('url', 'pathname'),
+#      Output('login-alert', 'children')],
+#     [Input('login-button', 'n_clicks')],
+#     [State('login-email', 'value'),
+#      State('login-password', 'value')])
+# def login_auth(n_clicks, email, pw):
+#     '''
+#     check credentials
+#     if correct, authenticate the session
+#     otherwise, authenticate the session and send user to login
+#     '''
+#     if n_clicks is None or n_clicks == 0:
+#         return no_update, no_update
+#     credentials = {'user': email, "password": pw}
+#     if authenticate_user(credentials):
+#         session['authed'] = True
+#         return '/home', ''
+#     session['authed'] = False
+#     return no_update, dbc.Alert('Incorrect credentials.', color='danger',
+#                                 dismissable=True)
+
 
 # @app.callback(
-#     Output('...'),
-#     [Input('...')]
+#     Output('home-url', 'pathname'),
+#     [Input('logout-button', 'n_clicks')]
 # )
-# def func(...):
-#     ...
+# def logout_(n_clicks):
+#     '''clear the session and send user to login'''
+#     if n_clicks is None or n_clicks == 0:
+#         return no_update
+#     session['authed'] = False
+#     return '/login'
 
-###############################################################################
-# run app
-###############################################################################
 
-if __name__ == "__main__":
-    app.run_server(
-        debug=True
-    )
+# ###############################################################################
+# # callbacks
+# ###############################################################################
+
+# # @app.callback(
+# #     Output('...'),
+# #     [Input('...')]
+# # )
+# # def func(...):
+# #     ...
+
+# ###############################################################################
+# # run app
+# ###############################################################################
+
+# if __name__ == "__main__":
+#     app.run_server(
+#         debug=True
+#     )
