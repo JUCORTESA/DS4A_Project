@@ -4,31 +4,26 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from flask import session
 
-
-
-# fake users dict
+# users dict
 users = {
-    'test':'pw'
+    'test': 'pw'
 }
 
 def authenticate_user(credentials):
-    '''
+    """
     generic authentication function
     returns True if user is correct and False otherwise
-    '''
-    #
-    # replace with your code
+    """
     authed = (credentials['user'] in users) and (credentials['password'] == users[credentials['user']])
-    #
-    #
+
     return authed
 
 def validate_login_session(f):
-    '''
+    """
     takes a layout function that returns layout objects
     checks if the user is logged in or not through the session.
     If not, returns an error with link to the login page
-    '''
+    """
     @wraps(f)
     def wrapper(*args,**kwargs):
         if session.get('authed',None)==True:
