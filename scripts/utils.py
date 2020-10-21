@@ -4,6 +4,7 @@ import dash_core_components as dcc
 import pandas as pd
 import dash
 import sys
+from datetime import date
 
 sys.path.append('../')
 
@@ -91,3 +92,15 @@ class my_dash_components:
             return dbc.Label(value, html_for="range-slider")
 
         return slider
+
+    def date_picker(label="", id="", start_date = date.today() ):
+        return dbc.FormGroup(
+            [
+                html.Label(label, className="col-sm"),
+                dcc.DatePickerRange(className="col-sm",
+                    id=id,
+                    start_date=start_date,
+                    end_date_placeholder_text='Select a date!'
+                )
+            ]
+            )

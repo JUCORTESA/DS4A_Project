@@ -9,7 +9,7 @@ import codecs
 # local imports
 from auth import authenticate_user, validate_login_session
 from app import app
-from apps import Home, Analytics, Geolocation
+from apps import Home, Analytics, Geolocation, Forecast
 
 
 ###############################################################################
@@ -88,8 +88,15 @@ def app_layout_3():
     template = codecs.open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'DS4A'
     app.index_string = template.read()
-    return Geolocation.page
+    return Geolocation.layout
 
+@validate_login_session
+def app_layout_4():
+    """route to Analytics layout in Analytics.py"""
+    template = codecs.open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'DS4A'
+    app.index_string = template.read()
+    return Forecast.layout
 
 ###############################################################################
 # utilities
@@ -109,6 +116,8 @@ def router(url):
         return app_layout_2()
     elif url == '/geolocation':
         return app_layout_3()
+    elif url == '/forecast':
+        return app_layout_4()
     else:
         return login_layout()
 

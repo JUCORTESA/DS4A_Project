@@ -67,13 +67,13 @@ content = html.Div(
          dbc.Row(
          [
             html.Div(className = "embed-responsive embed-responsive-16by9 my-4",
-                children = [html.Iframe(id= "map", srcDoc = open("models/Geolocation/Maps/Map.html", "r").read())],
+                children = [html.Iframe(id= "map", srcDoc = open("Models/Geolocation/Maps/Map.html", "r").read())],
             )
          ])
      ]
 )
 
-page = html.Div(children=[
+layout = html.Div(children=[
         mydbc.card(content=content, title="Geolocation", description="Here you can find interesting data about Teaté's stores location", color="light", footer="footer")
     ], className="my-2")
 
