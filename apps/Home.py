@@ -30,7 +30,7 @@ layout = html.Div([
                    'text-shadow': '2px 8px 6px rgba(0,0,0,0.2), '
                                   '0px -5px 35px rgba(255,255,255,0.3)'})
                 , className="mb-5 mt-0 p-0")  # PAGE TITLE
-    ], style={'padding': '0', 'margin': '0', 'padding-left': '150px'}),
+    ], style={'padding': '0', 'margin': '0'}),
 
     # text
     dbc.Row([
@@ -49,34 +49,35 @@ layout = html.Div([
                    'text-shadow': '2px 8px 6px rgba(0,0,0,0.2), 0px -5px '
                                   '35px rgba(255,255,255,0.3)'}),
             className="mb-5 mt-0 p-0")
-    ], style={'padding': '0', 'margin': '0', 'padding-left': '300px'}),
+    ], style={'padding': '0', 'margin': '0'}),
 
     # upload bottom
-    dbc.Row([dcc.Upload(id='upload-data',
-                        children=html.Button('Upload File')),
-             ], style={'padding': '0', 'margin': '0', 'padding-left': '150px'},
-            className="mb-5", justify="center"),
+    # dbc.Row([dcc.Upload(id='upload-data',
+    #                    children=html.Button('Upload File')),
+    #         ], style={'padding': '0', 'margin': '0'},
+    #       className="mb-5", justify="center"),
 
     # Cards to link to prediction and graphs
     dbc.Row([
 
-        dbc.Col(dbc.Card(children=[
-            html.H5(children='Maps interaction with store geolocation',
-                    className="text-center"),
+        dbc.Col(dbc.Card(
+            children=[
+                dbc.CardImg(src="/assets/img/geolocation.jpg", top=True),
+                html.H5(children='Maps interaction with store geolocation',
+                        className="text-center"),
 
             dbc.Button(
                 html.Span([html.I(className=""), "Geolocation"]),
-                href="",
+                href="/geolocation",
                 target="_blank",
                 color="primary",
                 className="mt-3"),
 
-            ],
-                         body=True, color="dark", outline=True)
-                , width=2, className="mb-1"),
+            ], body=True, color="dark", outline=True)
+            , width=3, className="mb-1"),
 
         dbc.Col(dbc.Card(children=[
-
+            dbc.CardImg(src="/assets/img/grocery-store.png", top=True),
             html.H5(
                 children='Analysis of store insights',
                 className="text-center"),
@@ -85,46 +86,45 @@ layout = html.Div([
                html.Span([html.I(
                    className=""),
                           "Store Analysis"]),
-               href="",
+               href="/store",
                target="_blank",
-               color="primary",
+               color="success",
                className="mt-3"),
 
-               ],
-                         body=True, color="dark", outline=True)
-                , width=2, className="mb-2"),
+               ], body=True, color="dark", outline=True)
+                , width=3, className="mb-2"),
 
         dbc.Col(dbc.Card(children=[
-            html.H5(children='Sales forecst by product',
+            dbc.CardImg(src="/assets/img/value.png", top=True),
+            html.H5(children='Sales forecast by product',
                     className="text-center"),
 
             dbc.Button(
                 html.Span([html.I(className=""), "Forecast"]),
-                href="",
+                href="/forecast",
                 target="_blank",
-                color="primary",
+                color="warning",
                 className="mt-3"),
 
-        ],
-            body=True, color="dark", outline=True)
-            , width=2, className="mb-3"),
+        ], body=True, color="dark", outline=True)
+            , width=3, className="mb-3"),
 
         dbc.Col(dbc.Card(children=[
-            html.H5(children='Overall business analysis',
+            dbc.CardImg(src="/assets/img/market.png", top=True),
+            html.H5(children='Analysis of product insights',
                     className="text-center"),
 
             dbc.Button(
-                html.Span([html.I(className=""), "Data Exploration"]),
-                href="",
+                html.Span([html.I(className=""), "Product Analysis"]),
+                href="/product",
                 target="_blank",
-                color="primary",
+                color="secondary",
                 className="mt-3"),
 
-        ],
-            body=True, color="dark", outline=True)
-            , width=2, className="mb-4"),
+        ], body=True, color="dark", outline=True)
+            , width=3, className="mb-4"),
 
-    ], style={'padding': '0', 'margin': '0', 'padding-left': '150px'},
+    ], style={'padding': '0', 'margin': 'auto'},
         className="mb-5", justify="center"),
 
 ])
