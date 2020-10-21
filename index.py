@@ -9,7 +9,7 @@ import codecs
 # local imports
 from auth import authenticate_user, validate_login_session
 from app import app
-from apps import Home, Analytics, Geolocation, Forecast
+from apps import Home, Geolocation, Forecast, Store, Product
 
 
 ###############################################################################
@@ -56,7 +56,6 @@ app.layout = html.Div(
     [
         dcc.Location(id='url', refresh=False),
         html.Div(
-            login_layout(),
             id='page-content'
         ),
     ]
@@ -67,36 +66,51 @@ app.layout = html.Div(
 @validate_login_session
 def app_layout():
     """route to home layout in Home.py"""
-    template = codecs.open("apps/views/template2.html", 'r')  # Load HTML FILE
-    app.title = 'DS4A'
+    template = open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'Home'
     app.index_string = template.read()
+    template.close()
     return Home.layout
 
 # Analytics layout content
 @validate_login_session
 def app_layout_2():
-    """route to Analytics layout in Analytics.py"""
-    template = codecs.open("apps/views/template2.html", 'r')  # Load HTML FILE
-    app.title = 'DS4A'
+    """route to Store Analytics layout in Store.py"""
+    template = open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'Store'
     app.index_string = template.read()
-    return Analytics.layout
+    template.close()
+    return Store.layout
 
 # Geolocation layout content
 @validate_login_session
 def app_layout_3():
-    """route to Analytics layout in Analytics.py"""
-    template = codecs.open("apps/views/template.html", 'r')  # Load HTML FILE
-    app.title = 'DS4A'
+    """route to Geolocation layout in Geolocation.py"""
+    template = open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'Geolocation'
     app.index_string = template.read()
+    template.close()
     return Geolocation.layout
 
+# Forecast layout content
 @validate_login_session
 def app_layout_4():
-    """route to Analytics layout in Analytics.py"""
-    template = codecs.open("apps/views/template.html", 'r')  # Load HTML FILE
-    app.title = 'DS4A'
+    """route to Forecast layout in Forecast.py"""
+    template = open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'Forecast'
     app.index_string = template.read()
+    template.close()
     return Forecast.layout
+
+# Product layout content
+@validate_login_session
+def app_layout_5():
+    """route to Product Analytics layout in Product.py"""
+    template = open("apps/views/template.html", 'r')  # Load HTML FILE
+    app.title = 'Product'
+    app.index_string = template.read()
+    template.close()
+    return Product.layout
 
 ###############################################################################
 # utilities
@@ -112,12 +126,14 @@ def router(url):
         return app_layout()
     elif url == '/login':
         return login_layout()
-    elif url == '/analytics':
+    elif url == '/store':
         return app_layout_2()
     elif url == '/geolocation':
         return app_layout_3()
     elif url == '/forecast':
         return app_layout_4()
+    if url == '/product':
+        return app_layout_5()
     else:
         return login_layout()
 
