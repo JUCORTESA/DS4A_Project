@@ -7,8 +7,8 @@ import dash
 chart_typ_lbl = ["Heat Map", "Location Distribution"]
 city_lbl = ["Cali", "Medellín"]
 mfr_lbl = ["Colanta", "Alquería", "Leche la Mejor"]
-prod_lbl = ["Lacteos", "Harinas", "Bebidas Gaseosas"]
-str_typ_lbl = ["Tipo 1", "Tipo 2", "Tipo 3"]
+prod_lbl_type = ["Lacteos", "Harinas", "Bebidas Gaseosas"]
+prod_lbl = ["Leche Alquería 900 ml", "Leche Alquería 450 ml", "Leche Colanta"]
 intvl_lbl = ["Weekly", "Monthly", "Annual"]
 
 
@@ -56,8 +56,8 @@ content = html.Div(
          [
              dbc.Col(mydbc.dropdown(label="City", list_options = city_lbl)),
              dbc.Col(mydbc.dropdown(label="Manufacturer", list_options = mfr_lbl)),
-             dbc.Col(mydbc.dropdown(label="Product type", list_options = prod_lbl)),
-             dbc.Col(mydbc.dropdown(label="Store type", list_options = str_typ_lbl)),
+             dbc.Col(mydbc.dropdown(label="Product Category", list_options = prod_lbl_type)),
+             dbc.Col(mydbc.dropdown(label="Product", list_options = prod_lbl)),
          ]),
          dbc.Row(
          [
