@@ -9,7 +9,8 @@ import codecs
 # local imports
 from auth import authenticate_user, validate_login_session
 from app import app
-from apps import Home, Geolocation, Forecast, Store, Product
+from apps import Home, Geolocation, Forecast, Store, Product, About, Template
+from scripts.utils import my_dash_components as mydbc
 
 
 ###############################################################################
@@ -66,51 +67,44 @@ app.layout = html.Div(
 @validate_login_session
 def app_layout():
     """route to home layout in Home.py"""
-    template = open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'Home'
-    app.index_string = template.read()
-    template.close()
-    return Home.layout
+    return Template.template(Home.layout, app.title)
 
 # Analytics layout content
 @validate_login_session
 def app_layout_2():
     """route to Store Analytics layout in Store.py"""
-    template = open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'Store'
-    app.index_string = template.read()
-    template.close()
-    return Store.layout
+    return Template.template(Store.layout, app.title)
 
 # Geolocation layout content
 @validate_login_session
 def app_layout_3():
     """route to Geolocation layout in Geolocation.py"""
-    template = open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'Geolocation'
-    app.index_string = template.read()
-    template.close()
-    return Geolocation.layout
+    return Template.template(Geolocation.layout, app.title)
 
 # Forecast layout content
 @validate_login_session
 def app_layout_4():
     """route to Forecast layout in Forecast.py"""
-    template = open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'Forecast'
-    app.index_string = template.read()
-    template.close()
-    return Forecast.layout
+    return Template.template(Forecast.layout, app.title)
 
 # Product layout content
 @validate_login_session
 def app_layout_5():
     """route to Product Analytics layout in Product.py"""
-    template = open("apps/views/template.html", 'r')  # Load HTML FILE
     app.title = 'Product'
-    app.index_string = template.read()
-    template.close()
-    return Product.layout
+    return Template.template(Product.layout, app.title)
+
+# About us layout content
+@validate_login_session
+def app_layout_6():
+    """route to About layout in Product.py"""
+    app.title = 'About'
+    return Template.template(About.layout, app.title)
+
 
 ###############################################################################
 # utilities
@@ -134,6 +128,8 @@ def router(url):
         return app_layout_4()
     if url == '/product':
         return app_layout_5()
+    if url == '/about':
+        return app_layout_6()
     else:
         return login_layout()
 

@@ -64,8 +64,8 @@ content = html.Div(
 )
 
 layout = html.Div(children=[
-    mydbc.card(content=content, title="Forecast",
-               description="Here you can find interesting data about Teaté's products forecast",
+    mydbc.card(content=content, title="Store",
+               description="Here you can find interesting data about Teaté's products store",
                color="light", footer="footer")
 ], className="my-2")
 

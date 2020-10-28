@@ -1,0 +1,9 @@
+.template-sidebar {
+    position: fixed;
+    top:    0;
+    left:   0;
+    bottom: 0;
+    padding: 2rem 1rem;
+    max-width: 100%;
+    background-color: #FFF9E9 !important;
+}
