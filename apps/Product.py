@@ -2,12 +2,13 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 from scripts.utils import my_dash_components as mydbc
+from data import get_product_df
+import plotly.graph_objects as go
+from app import app
+from dash.dependencies import Input, Output
+import datetime as dt
 
 
-city_lbl = ["Cali", "Medellín"]
-mfr_lbl = ["Colanta", "Alquería", "Leche la Mejor"]
-prod_type_lbl = ["Lacteos", "Harinas", "Bebidas Gaseosas"]
-prod_lbl = ["Leche Alquería 900 ml", "Leche Alquería 450 ml", "Leche Colanta"]
 
 styles = {
     'container': {
@@ -18,54 +19,55 @@ styles = {
         'width': '100%'
     }
 }
+df = get_product_df()
 
 content = html.Div(
     [
         dbc.Row(
             [
-                dbc.Col(mydbc.dropdown(label="City", list_options=city_lbl)),
-                dbc.Col(mydbc.dropdown(label="Manufacturer",
-                                       list_options=mfr_lbl)),
-                dbc.Col(mydbc.dropdown(label="Product type",
-                                       list_options=prod_type_lbl)),
-                dbc.Col(
-                    mydbc.dropdown(label="Product", list_options=prod_lbl)),
+                dbc.Col(dcc.Dropdown(id="city", options=[{'label': i, 'value': i} for i in df.Población.unique()],
+                                     multi=True, value=['Medellín']))
             ]),
         dbc.Row(
-            children=[
-                dbc.Col(dbc.Button("Run Predictor", color="primary",
-                                   className="col-8")),
-                dbc.Col(children=[
-                    html.Div(children=[mydbc.date_picker(label="Date Interval",
-                                                         id="date-picker")],
-                             className="float-right")
-                ], className="col-4 justify-content-start"),
-
+            [
+                dcc.DatePickerRange(id="my-date-picker-range",
+                                    start_date="2020-01-07",
+                                    end_date="2020-05-07",
+                                    end_date_placeholder_text='Select a date!'
+                                    )
             ]),
+
         dbc.Row([
-            html.Div(className="embed-responsive embed-responsive-16by9",
-                     children=[
-                         dcc.Graph(id='example-graph',
-                                   figure={
-                                       'data': [
-                                           {'x': ["Leche Entera Uht X 200 Ml", "Leche Entera Uht X 400 Ml", "Leche Entera Uht X 900 Ml"], 'y': [3, 4, 4],
-                                            'type': 'bar',
-                                            'name': 'Product'},
-                                       ],
-                                       'layout': {
-                                           'title': 'Product Visualization',
-                                       }
-                                   },
-                                   className="embed-responsive-item")
-                     ],
+            html.Div(children=[dcc.Graph(id='live-graph')]
                      )
         ])
     ]
 )
 
 layout = html.Div(children=[
-    mydbc.card(content=content, title="Product",
+    mydbc.card(content=content, title="Product Analysis",
                description="Here you can find interesting data about Teaté's products",
-               color="light", footer="footer")
+               color="light", footer="")
 ], className="my-2")
+
+@app.callback(Output('live-graph', 'figure'),
+              [Input('my-date-picker-range', 'start_date'),
+               Input('my-date-picker-range', 'end_date'),
+               Input('city', 'value')])
+def update_graph(start_date, end_date, city):
+    start_date = dt.datetime.strptime(start_date, '%Y-%m-%d')
+
+    end_date = dt.datetime.strptime(end_date, '%Y-%m-%d')
+
+    if city:
+        df2 = df[
+            (df['Fecha Pedido'] > start_date) & (df['Fecha Pedido'] < end_date)
+            ]
+        df2 = df2[df2['Población'].isin(city)]
+    else:
+        df2 = df[
+            (df['Fecha Pedido'] > start_date) & (df['Fecha Pedido'] < end_date)]
+
+    fig = go.Figure(data=go.Bar(x=df2['UM'], y=df2['Material']))
+    return fig
 
