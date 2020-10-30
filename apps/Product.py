@@ -2,12 +2,10 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 from scripts.utils import my_dash_components as mydbc
-from data import get_product_df
-import plotly.graph_objects as go
 from app import app
 from dash.dependencies import Input, Output
-import datetime as dt
-
+from data import run_query, engine
+import plotly.express as px
 
 
 styles = {
@@ -19,13 +17,15 @@ styles = {
         'width': '100%'
     }
 }
-df = get_product_df()
+
+cities = run_query("select DISTINCT(Poblacion) from historicopedidos", engine).poblacion.fillna(0).unique()
+#df = get_product_df()
 
 content = html.Div(
     [
         dbc.Row(
             [
-                dbc.Col(dcc.Dropdown(id="city", options=[{'label': i, 'value': i} for i in df.Población.unique()],
+                dbc.Col(dcc.Dropdown(id="city", options=[{'label': i, 'value': i} for i in cities],
                                      multi=True, value=['Medellín']))
             ]),
         dbc.Row(
@@ -55,19 +55,18 @@ layout = html.Div(children=[
                Input('my-date-picker-range', 'end_date'),
                Input('city', 'value')])
 def update_graph(start_date, end_date, city):
-    start_date = dt.datetime.strptime(start_date, '%Y-%m-%d')
 
-    end_date = dt.datetime.strptime(end_date, '%Y-%m-%d')
+    df = run_query("select Material, UM, Poblacion, Fecha_Pedido from  "
+                   "historicopedidos WHERE Fecha_Pedido >= "
+                   + "\'" + start_date + "\'" + " AND Fecha_Pedido < "
+                   + "\'" + end_date + "\'", engine)
 
     if city:
-        df2 = df[
-            (df['Fecha Pedido'] > start_date) & (df['Fecha Pedido'] < end_date)
-            ]
-        df2 = df2[df2['Población'].isin(city)]
+        df2 = df[df['poblacion'].isin(city)]
     else:
         df2 = df[
-            (df['Fecha Pedido'] > start_date) & (df['Fecha Pedido'] < end_date)]
+            (df['fecha_pedido'] > start_date) & (
+                        df['fecha_pedido'] < end_date)]
 
-    fig = go.Figure(data=go.Bar(x=df2['UM'], y=df2['Material']))
+    fig = px.bar(df2, x='um', y='material', color='um')
     return fig
-

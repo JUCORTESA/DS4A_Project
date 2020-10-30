@@ -1,33 +1,13 @@
-import logging
+from sqlalchemy import *
 import pandas as pd
-from app import cache
-import numpy as np
+user_name='postgres'
+password='12345678'
+host='teate.ctslcs9kjcvo.us-east-2.rds.amazonaws.com'
+db_name='postgres'
 
-TIMEOUT = 120
+connection_string=f"postgresql://{user_name}:{password}@{host}/{db_name}"
+engine = create_engine(connection_string, max_overflow=20)
 
-pd.set_option('display.max_columns', None)
-pd.options.display.float_format = '{:,.1f}'.format
-aws_access_key_id="AKIAI4AGF74Z5Z63F7CA"
-aws_secret_access_key="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"
-
-region_name = "us-east-2"
-
-bucket = "teate"
-#key='teate.csv'
-key='teate.pkl'
-
-#df = pd.read_csv('https://teate.s3.us-east-2.amazonaws.com/teate.csv', low_memory=False)
-df = pd.read_pickle('https://teate.s3.us-east-2.amazonaws.com/teate.pkl')
-#df = pd.read_pickle("./teate.pkl")
-print("producto OK")
-
-@cache.memoize(timeout=TIMEOUT)
-def get_product_df():
-    # Generate a dataframe with only columns to use
-    #df = pd.read_pickle("./teate.pkl")
-    cols = ['NOMBRE CAT', 'Material', 'Fecha Pedido', 'NOMBRE SUB', 'Población', 'UM']
-    df['Población'] = df['Población'].fillna(0)
-    df2 = df[cols]
-    return df2
-
-
+def run_query(sql,engine):
+    result = engine.connect().execution_options(isolation_level="AUTOCOMMIT").execute((text(sql)))
+    return pd.DataFrame(result.fetchall(), columns=result.keys())

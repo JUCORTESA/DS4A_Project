@@ -8,7 +8,7 @@ import codecs
 
 # local imports
 from auth import authenticate_user, validate_login_session
-from app import app
+from app import app, server
 from apps import Home, Geolocation, Forecast, Store, Product, About, Template
 from scripts.utils import my_dash_components as mydbc
 
@@ -167,7 +167,6 @@ def logout_(n_clicks):
         return no_update
     session['authed'] = False
     return '/login'
-
 
 if __name__ == "__main__":
     app.run_server(debug=True)

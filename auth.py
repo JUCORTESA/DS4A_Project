@@ -6,7 +6,7 @@ from flask import session
 
 # users dict
 users = {
-    'test': 'pw'
+    'ds4a': 'group68'
 }
 
 def authenticate_user(credentials):
