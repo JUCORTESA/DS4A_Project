@@ -30,20 +30,15 @@ content = html.Div(
                 dbc.Col(dcc.Dropdown(id="manufacturer", options=[{'label': mfr_lbl.iloc[i]['nombre_fabricante'], 'value': mfr_lbl.iloc[i]['fabricante']} for i in range(mfr_lbl.shape[0])])),
                 dbc.Col(dcc.Dropdown(id="product category", options=[{'label': prod_cat_lbl.iloc[i]['nombre_cat'], 'value': prod_cat_lbl.iloc[i]['min']} for i in range(prod_cat_lbl.shape[0])])),
                 dbc.Col(dcc.Dropdown(id="product sub-category", options=[{'label': prod_sub_cat_lbl.iloc[i]['nombre_sub'], 'value': prod_sub_cat_lbl.iloc[i]['min']} for i in range(prod_sub_cat_lbl.shape[0])])),
-            ]),
-        dbc.Row(
-            children=[
-                dcc.DatePickerRange(id="my-date-picker-range",
+                dbc.Col(dcc.DatePickerRange(id="my-date-picker-range",
                                     start_date="2020-01-07",
                                     end_date="2020-05-07",
                                     end_date_placeholder_text='Select a date!'
-                                    ),
-
+                                    ),  style ={'font-size':5})
             ]),
         dbc.Row([
-            html.Div(children=[dcc.Graph(id='store_graph')
-                     ],
-                     )
+            dbc.Col(dcc.Graph(id='store_graph'),),
+            dbc.Col(dcc.Graph(id='storemoney_graph'),)
         ])
     ]
 )
@@ -63,7 +58,7 @@ layout = html.Div(children=[
                Input('product sub-category', 'value')])
 def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
 
-    query = "select SUM(cantidad_pedido) as cantidad, t.Nombre_tienda from historicopedidos h left join tiendas t on h.tienda = t.tienda left join categorias c on h.Material = c.Material WHERE Fecha_Pedido >= " + "\'" + start_date + "\'" + " AND Fecha_Pedido < "+ "\'" + end_date + "\'"+""
+    query = "select SUM(cantidad_pedido) as cantidad, t.Nombre_tienda from historicopedidos h left join tiendas t on h.tienda = t.tienda left join categorias c on h.Material = c.Material WHERE Valor_TotalFactura >0 AND Fecha_Pedido >= " + "\'" + start_date + "\'" + " AND Fecha_Pedido < "+ "\'" + end_date + "\'"+""
     
     if city is not None:
         if city == 'Cali':
@@ -82,4 +77,34 @@ def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
         query = query + 'AND c.subcategoria ='+str(sub_cat)
     df = run_query(query + "group by t.Nombre_tienda, t.tienda order by cantidad DESC limit 10", engine)
     fig = px.bar(df, x='nombre_tienda', y='cantidad')
+    return fig
+
+@app.callback(Output('storemoney_graph', 'figure'),
+              [Input('my-date-picker-range', 'start_date'),
+               Input('my-date-picker-range', 'end_date'),
+               Input('city', 'value'),
+               Input('manufacturer', 'value'),
+               Input('product category', 'value'),
+               Input('product sub-category', 'value')])
+def update_moneygraph(start_date, end_date, city, manufacturer, cat, sub_cat):
+
+    query = "select SUM(Valor_TotalFactura) as ventas, t.Nombre_tienda from historicopedidos h left join tiendas t on h.tienda = t.tienda left join categorias c on h.Material = c.Material WHERE Valor_TotalFactura >0 AND Fecha_Pedido >= " + "\'" + start_date + "\'" + " AND Fecha_Pedido < "+ "\'" + end_date + "\'"+""
+    
+    if city is not None:
+        if city == 'Cali':
+            centro = 2000
+        else:
+            centro = 3000
+        query = query + 'AND t.Cod_Centro ='+ str(centro)
+
+    if manufacturer is not None:
+        query = query + 'AND h.fabricante =' + str(manufacturer)
+
+    if cat is not None:
+        query = query + 'AND c.jerarquia_productos ='+str(cat)
+
+    if sub_cat is not None:
+        query = query + 'AND c.subcategoria ='+str(sub_cat)
+    df = run_query(query + "group by t.Nombre_tienda, t.tienda order by ventas DESC limit 10", engine)
+    fig = px.bar(df, x='nombre_tienda', y='ventas')
     return fig
