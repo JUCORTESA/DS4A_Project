@@ -62,7 +62,7 @@ layout = html.Div([
 
         dbc.Col(dbc.Card(
             children=[
-                dbc.CardImg(src="/assets/img/geolocation.jpg", top=True),
+                dbc.CardImg(src="/assets/img/geolocation.png", top=True),
                 html.H5(children='Maps interaction with store geolocation',
                         className="text-center"),
 
@@ -76,23 +76,23 @@ layout = html.Div([
             ], body=True, color="dark", outline=True)
             , width=3, className="mb-1"),
 
-        # dbc.Col(dbc.Card(children=[
-        #    dbc.CardImg(src="/assets/img/grocery-store.png", top=True),
-        #    html.H5(
-        #        children='Analysis of store insights',
-        #        className="text-center"),
+        dbc.Col(dbc.Card(children=[
+            dbc.CardImg(src="/assets/img/grocery-store.png", top=True),
+            html.H5(
+                children='Analysis of store insights',
+                className="text-center"),
 
-            # dbc.Button(
-            #   html.Span([html.I(
-            #       className=""),
-            #              "Store Analysis"]),
-            #   href="/store",
-            #   target="_blank",
-            #  color="success",
-            #   className="mt-3"),
+            dbc.Button(
+            html.Span([html.I(
+               className=""),
+                      "Store Analysis"]),
+                href="/store",
+                target="_blank",
+                color="success",
+                className="mt-3"),
 
-        #       ], body=True, color="dark", outline=True)
-        #        , width=3, className="mb-2"),
+            ], body=True, color="dark", outline=True)
+            , width=2, className="mb-2"),
 
         dbc.Col(dbc.Card(children=[
             dbc.CardImg(src="/assets/img/value.png", top=True),

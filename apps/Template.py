@@ -34,9 +34,9 @@ def Footer():
                 ])
             ]),
             html.Div(className="copyright pull-right", children=[
-                html.Label("© 2020, made with "),
+                html.Label("© 2020, made with  "),
                 html.I(className="fa fa-heart heart"),
-                html.Label(" by "),
+                html.Label("  by "),
                 html.A(href="/about", children=[          
                     html.B("Team 68")
                 ])
