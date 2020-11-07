@@ -44,7 +44,7 @@ class my_dash_components:
         ], color=color
                         )
 
-    def dropdown(label="", list_options=[], id="",value=None, searchable=True, clearable=True):
+    def dropdown(label="", list_options=[], id="",value=None, searchable=True, clearable=True,optionHeight=35):
         options = []
         for option in list_options:
             options.append({"label": option, "value": option})
@@ -60,7 +60,8 @@ class my_dash_components:
                                  className="col-sm",
                                  value=value,
                                  searchable=searchable,
-                                 clearable=clearable
+                                 clearable=clearable,
+                                 optionHeight=optionHeight
                              )
                          ]
                          ),
