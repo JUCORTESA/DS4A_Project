@@ -53,30 +53,43 @@ def Sidebar(pagename):
                             html.P("Home")
                         ])
                     ]),
-                    html.Li(className=classnames[1], children=[
-                        html.A(href="/store", children=[
-                            html.I(className="fa fa-shopping-cart"),
-                            html.P("Store Analysis")
-                        ])
-                    ]),
-                    html.Li(className=classnames[4], children=[
-                        html.A(href="/product", children=[
-                            html.I(className="fa fa-archive"),
-                            html.P("Product Analysis")
-                        ])
-                    ]),
-                    html.Li(className=classnames[2], children=[
-                        html.A(href="/geolocation", children=[
-                            html.I(className="fa fa-map-marker"),
-                            html.P("Geolocation")
-                        ])
-                    ]),
-                    html.Li(className=classnames[3], children=[
-                        html.A(href="/forecast", children=[
-                            html.I(className="fa fa-line-chart"),
-                            html.P("Forecast")
-                        ])
-                    ]),
+                    html.Div(
+                        [
+                            html.Li(className=classnames[1], children=[
+                                html.A(children=[
+                                    html.I(className="fa fa-pie-chart"),
+                                    html.P("Analysis")
+                                ])
+                            ], id="collapse-button"),
+                            dbc.Collapse(
+                                dbc.Nav([
+                                        html.Li(className=classnames[1], children=[
+                                            html.A(href="/store", children=[
+                                                html.I(className="fa fa-shopping-cart"),
+                                                html.P("Store Analysis")
+                                            ])
+                                        ],style={"padding-left": 25}),
+                                        html.Li(className=classnames[4], children=[
+                                            html.A(href="/product", children=[
+                                                html.I(className="fa fa-archive"),
+                                                html.P("Product Analysis")
+                                            ])
+                                        ],style={"padding-left": 25}),
+                                        html.Li(className=classnames[2], children=[
+                                            html.A(href="/geolocation", children=[
+                                                html.I(className="fa fa-map-marker"),
+                                                html.P("Geolocation")
+                                            ])
+                                        ],style={"padding-left": 25}),
+                                        html.Li(className=classnames[3], children=[
+                                            html.A(href="/forecast", children=[
+                                                html.I(className="fa fa-line-chart"),
+                                                html.P("Forecast")
+                                            ])
+                                        ],style={"padding-left": 25}),
+                            ]), id="collapse",)
+                        ]
+                    ),
                     html.Li(className=classnames[5], children=[
                         html.A(href="/about", children=[
                             html.I(className="fa fa-users"),
@@ -86,6 +99,15 @@ def Sidebar(pagename):
                 ])
             ])
         ])
+@app.callback(
+    Output("collapse", "is_open"),
+    [Input("collapse-button", "n_clicks")],
+    [State("collapse", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 def Topbar():
     topbar =  html.Nav(className="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent",
