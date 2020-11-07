@@ -21,17 +21,7 @@ def template(content, pagename):
 def Footer():
     return html.Div(className="container-fluid", children=[
             html.Nav(className="pull-left", children=[
-                html.Ul([
-                    html.Li([
-                        html.P("Pie 1")
-                    ]),
-                    html.Li([
-                        html.P("Pie 2")
-                    ]),
-                    html.Li([
-                        html.P("Pie 3")
-                    ])
-                ])
+
             ]),
             html.Div(className="copyright pull-right", children=[
                 html.Label("© 2020, made with  "),
@@ -54,7 +44,7 @@ def Sidebar(pagename):
                 html.A(href="https://teate.co/", className="logo-normal ",children=[
                     html.Img(src="https://teate.co/wp-content/themes/teatetheme/images/logo.png")
                 ])
-            ]),
+                ]),
             html.Div(className="sidebar-wrapper", id="collapse", children=[
                 html.Ul(className="nav", id="nav", children=[
                     html.Li(className=classnames[0], children=[
@@ -69,6 +59,12 @@ def Sidebar(pagename):
                             html.P("Store Analysis")
                         ])
                     ]),
+                    html.Li(className=classnames[4], children=[
+                        html.A(href="/product", children=[
+                            html.I(className="fa fa-archive"),
+                            html.P("Product Analysis")
+                        ])
+                    ]),
                     html.Li(className=classnames[2], children=[
                         html.A(href="/geolocation", children=[
                             html.I(className="fa fa-map-marker"),
@@ -79,12 +75,6 @@ def Sidebar(pagename):
                         html.A(href="/forecast", children=[
                             html.I(className="fa fa-line-chart"),
                             html.P("Forecast")
-                        ])
-                    ]),
-                    html.Li(className=classnames[4], children=[
-                        html.A(href="/product", children=[
-                            html.I(className="fa fa-archive"),
-                            html.P("Product Analysis")
                         ])
                     ]),
                     html.Li(className=classnames[5], children=[

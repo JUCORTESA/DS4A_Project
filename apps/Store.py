@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output
 from data import run_query, engine
 import plotly.express as px
 
-city_lbl = ["Cali", "Medellín"]
+city_lbl = ["CALI", "MEDELLIN"]
 mfr_lbl = run_query(
     "select DISTINCT ON (fabricante) fabricante, nombre_fabricante from "
     "historicopedidos",
@@ -32,32 +32,47 @@ styles = {
 
 content = html.Div(
     [
+        dbc.Row([dbc.Col(html.H5("SKU")),
+                dbc.Col(html.H5("Manufacturer")),
+                dbc.Col(html.H5("Category")),
+                dbc.Col(html.H5("Subcategory")),
+                 ]),
         dbc.Row(
             [
                 dbc.Col(dcc.Dropdown(id="city",
                                      options=[{'label': i, 'value': i} for i in
-                                              city_lbl]), width=2),
+                                              city_lbl],
+                                    placeholder="Select a SKU"
+                                     ), width=3, style={'font-size': "80%"}),
                 dbc.Col(dcc.Dropdown(id="manufacturer", options=[
                     {'label': mfr_lbl.iloc[i]['nombre_fabricante'],
                      'value': mfr_lbl.iloc[i]['fabricante']} for i in
-                    range(mfr_lbl.shape[0])]), width=2),
+                    range(mfr_lbl.shape[0])],
+                    placeholder="Select a manufacturer"), width=3, style={'font-size': "80%"}),
                 dbc.Col(dcc.Dropdown(id="product category", options=[
                     {'label': prod_cat_lbl.iloc[i]['nombre_cat'],
                      'value': prod_cat_lbl.iloc[i]['min']} for i in
-                    range(prod_cat_lbl.shape[0])]), width=2),
+                    range(prod_cat_lbl.shape[0])],
+                    placeholder="Select a product category"), width=3, style={'font-size': "80%"}),
                 dbc.Col(dcc.Dropdown(id="product sub-category", options=[
                     {'label': prod_sub_cat_lbl.iloc[i]['nombre_sub'],
                      'value': prod_sub_cat_lbl.iloc[i]['min']} for i in
-                    range(prod_sub_cat_lbl.shape[0])]), width=2),
+                    range(prod_sub_cat_lbl.shape[0])],
+                    placeholder="Select a product subcategory"), width=3, style={'font-size': "80%"})
+            ]),
+        dbc.Row(dbc.Col(html.H4("Date"))),
+        dbc.Row([
                 dbc.Col(dcc.DatePickerRange(id="my-date-picker-range",
                                             start_date="2020-01-07",
                                             end_date="2020-05-07",
                                             end_date_placeholder_text='Select a date!'
-                                            ), width=3, style={'margin-bottom':'50px', 'width': '100%', 'padding': 0, 'font-size': "50%"})
-            ], ),
+                                            ), style={'padding': 10, 'font-size': "50%"}),
+                dbc.Col(html.P("Date on format Month/Day/Year"), style={"padding": 25}), dbc.Col(), dbc.Col()
+                ]),
         dbc.Row([
             dbc.Col(dcc.Loading(id="loading-icon-g", children=dcc.Graph(id='store_graph'))),
-            dbc.Col(dcc.Loading(id="loading-icon-s", children=dcc.Graph(id='storemoney_graph')))
+            dbc.Col(dcc.Loading(id="loading-icon-s", children=dcc.Graph(id='storemoney_graph'))),
+
         ])
     ]
 )
@@ -65,7 +80,8 @@ content = html.Div(
 layout = html.Div(children=[
     mydbc.card(content=content, title="Store Analysis",
                description="Here you can find interesting data about Teaté's "
-                           "associated stores",
+                           "associated stores."
+                            "Please select the desired filters to plot the total quantity sold by stores and the total income that each store represents to Teaté",
                color="light", footer="")
 ], className="my-2")
 
@@ -103,7 +119,7 @@ def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
         query + "group by t.Nombre_tienda, t.tienda order by cantidad DESC "
                 "limit 10",
         engine)
-    fig = px.bar(df, x='nombre_tienda', y='cantidad')
+    fig = px.bar(df, x='nombre_tienda', y='cantidad', title="Store Analysis", labels={'nombre_tienda':'Store name', 'cantidad': 'Quantity'})
     return fig
 
 
@@ -139,5 +155,5 @@ def update_moneygraph(start_date, end_date, city, manufacturer, cat, sub_cat):
     df = run_query(
         query + "group by t.Nombre_tienda, t.tienda order by ventas DESC limit 10",
         engine)
-    fig = px.bar(df, x='nombre_tienda', y='ventas')
+    fig = px.bar(df, x='nombre_tienda', y='ventas', title="Income Analysis per Store", labels={'nombre_tienda':'Store name', 'ventas': 'Income'})
     return fig
