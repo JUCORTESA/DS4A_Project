@@ -60,22 +60,6 @@ layout = html.Div([
     # Cards to link to prediction and graphs
     dbc.Row([
 
-        dbc.Col(dbc.Card(
-            children=[
-                dbc.CardImg(src="/assets/img/geolocation.png", top=True),
-                html.H5(children='Maps interaction with store geolocation',
-                        className="text-center"),
-
-            dbc.Button(
-                html.Span([html.I(className=""), "Geolocation"]),
-                href="/geolocation",
-                target="_blank",
-                color="primary",
-                className="mt-3"),
-
-            ], body=True, color="dark", outline=True)
-            , width=3, className="mb-1"),
-
         dbc.Col(dbc.Card(children=[
             dbc.CardImg(src="/assets/img/grocery-store.png", top=True),
             html.H5(
@@ -92,7 +76,38 @@ layout = html.Div([
                 className="mt-3"),
 
             ], body=True, color="dark", outline=True)
-            , width=2, className="mb-2"),
+            , width=3, className="mb-2"),
+
+        dbc.Col(dbc.Card(children=[
+            dbc.CardImg(src="/assets/img/market.png", top=True),
+            html.H5(children='Analysis of product insights',
+                    className="text-center"),
+
+            dbc.Button(
+                html.Span([html.I(className=""), "Product Analysis"]),
+                href="/product",
+                target="_blank",
+                color="secondary",
+                className="mt-3"),
+
+        ], body=True, color="dark", outline=True)
+            , width=3, className="mb-4"),
+
+        dbc.Col(dbc.Card(
+            children=[
+                dbc.CardImg(src="/assets/img/geolocation.png", top=True),
+                html.H5(children='Maps interaction with store geolocation',
+                        className="text-center"),
+
+                dbc.Button(
+                    html.Span([html.I(className=""), "Geolocation"]),
+                    href="/geolocation",
+                    target="_blank",
+                    color="primary",
+                    className="mt-3"),
+
+            ], body=True, color="dark", outline=True)
+            , width=3, className="mb-1"),
 
         dbc.Col(dbc.Card(children=[
             dbc.CardImg(src="/assets/img/value.png", top=True),
@@ -109,20 +124,7 @@ layout = html.Div([
         ], body=True, color="dark", outline=True)
             , width=3, className="mb-3"),
 
-        dbc.Col(dbc.Card(children=[
-            dbc.CardImg(src="/assets/img/market.png", top=True),
-            html.H5(children='Analysis of product insights',
-                    className="text-center"),
 
-            dbc.Button(
-                html.Span([html.I(className=""), "Product Analysis"]),
-                href="/product",
-                target="_blank",
-                color="secondary",
-                className="mt-3"),
-
-        ], body=True, color="dark", outline=True)
-            , width=3, className="mb-4"),
 
     ], style={'padding': '0', 'margin': 'auto'},
         className="mb-5", justify="center"),
