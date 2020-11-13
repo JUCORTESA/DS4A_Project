@@ -1,4 +1,4 @@
-![](https://teate.co/wp-content/themes/teatetheme/images/logo.png) ![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/ds4A-logo.png?raw=true)
+![](https://teate.co/wp-content/themes/teatetheme/images/logo.png)  ![](https://github.com/Mrjarkos/DS4A_Project/blob/main/assets/img/ds4A-logo.png)
 
 
 # Teaté Colombia S.A.S
@@ -18,7 +18,7 @@ Finally run the application by running:
 ```
 python3 index.py
 ```
-### Business Problem
+## Business Problem
 The neighborhood shops are one of the most important sales channels in Colombia for fast-moving consumer goods, representing more than 50% of the total sales. 
 Moreover, four out of five Colombian households buy their basic foods from these types of stores due to their offer of low prices and convenient products. 
 However, these small businesses are highly inefficientthese businesses and their suppliers need tools that allow them to achieve greater efficiency in their operations. 
@@ -60,12 +60,12 @@ plotly-dash-multipage-template
     └───img
     └───js
 ```
-### Application Overview
-*FORECAST*  
-![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/forecast.png?raw=true)
+## Application Overview
+### FORECAST
+![](https://github.com/Mrjarkos/DS4A_Project/blob/main/assets/img/forecast.png)
 
-*STORE ANALYSIS*  
-![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/store.png?raw=true)
+### STORE ANALYSIS
+![](https://github.com/Mrjarkos/DS4A_Project/blob/main/assets/img/store.png)
 
-*PRODUCT ANALYSIS*  
-![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/product.png?raw=true)
+### PRODUCT ANALYSIS
+![](https://github.com/Mrjarkos/DS4A_Project/blob/main/assets/img/product.png)
