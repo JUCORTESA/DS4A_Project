@@ -8,17 +8,13 @@ from data import run_query, engine
 import plotly.express as px
 
 city_lbl = ["CALI", "MEDELLIN"]
-mfr_lbl = run_query(
-    "select DISTINCT ON (fabricante) fabricante, nombre_fabricante from "
-    "historicopedidos",
-    engine).dropna()
+
 prod_cat_lbl = run_query(
     "select MIN(jerarquia_productos), nombre_cat from categorias group by "
     "nombre_cat",
     engine).dropna()
-prod_sub_cat_lbl = run_query(
-    "select MIN(subcategoria), nombre_sub from categorias group by nombre_sub",
-    engine).dropna()
+product_type = []
+manufacturer = []
 
 styles = {
     'container': {
@@ -32,9 +28,9 @@ styles = {
 
 content = html.Div(
     [
-        dbc.Row([dbc.Col(html.H5("SKU")),
-                dbc.Col(html.H5("Manufacturer")),
+        dbc.Row([dbc.Col(html.H5("City Warehouse")),
                 dbc.Col(html.H5("Category")),
+                dbc.Col(html.H5("Manufacturer")),
                 dbc.Col(html.H5("Subcategory")),
                  ]),
         dbc.Row(
@@ -42,23 +38,19 @@ content = html.Div(
                 dbc.Col(dcc.Dropdown(id="city",
                                      options=[{'label': i, 'value': i} for i in
                                               city_lbl],
-                                    placeholder="Select a SKU"
+                                    placeholder="Select a City Warehouse"
                                      ), width=3, style={'font-size': "80%"}),
-                dbc.Col(dcc.Dropdown(id="manufacturer", options=[
-                    {'label': mfr_lbl.iloc[i]['nombre_fabricante'],
-                     'value': mfr_lbl.iloc[i]['fabricante']} for i in
-                    range(mfr_lbl.shape[0])],
-                    placeholder="Select a manufacturer"), width=3, style={'font-size': "80%"}),
                 dbc.Col(dcc.Dropdown(id="product category", options=[
                     {'label': prod_cat_lbl.iloc[i]['nombre_cat'],
                      'value': prod_cat_lbl.iloc[i]['min']} for i in
                     range(prod_cat_lbl.shape[0])],
                     placeholder="Select a product category"), width=3, style={'font-size': "80%"}),
-                dbc.Col(dcc.Dropdown(id="product sub-category", options=[
-                    {'label': prod_sub_cat_lbl.iloc[i]['nombre_sub'],
-                     'value': prod_sub_cat_lbl.iloc[i]['min']} for i in
-                    range(prod_sub_cat_lbl.shape[0])],
-                    placeholder="Select a product subcategory"), width=3, style={'font-size': "80%"})
+                dbc.Col(dcc.Dropdown(id="manufacturer",
+                                     options=[product for product in manufacturer],
+                                     placeholder="Select a manufacturer"), width=3, style={'font-size': "80%"}),
+                dbc.Col(dcc.Dropdown(id="product sub-category",
+                                     options=[product for product in product_type],
+                                     placeholder="Select a product subcategory"), width=3, style={'font-size': "80%"})
             ]),
         dbc.Row(dbc.Col(html.H4("Date"))),
         dbc.Row([
@@ -101,11 +93,11 @@ def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
             + "\'" + " AND Fecha_Pedido < " + "\'" + end_date + "\'" + ""
 
     if city is not None:
-        if city == 'Cali':
+        if city == 'CALI':
             centro = 2000
         else:
             centro = 3000
-        query = query + 'AND t.Cod_Centro =' + str(centro)
+        query = query + 'AND h.ce =' + str(centro)
 
     if manufacturer is not None:
         query = query + 'AND h.fabricante =' + str(manufacturer)
@@ -138,11 +130,11 @@ def update_moneygraph(start_date, end_date, city, manufacturer, cat, sub_cat):
             + "\'" + " AND Fecha_Pedido < " + "\'" + end_date + "\'" + ""
 
     if city is not None:
-        if city == 'Cali':
+        if city == 'CALI':
             centro = 2000
         else:
             centro = 3000
-        query = query + 'AND t.Cod_Centro =' + str(centro)
+        query = query + 'AND h.ce =' + str(centro)
 
     if manufacturer is not None:
         query = query + 'AND h.fabricante =' + str(manufacturer)
