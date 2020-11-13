@@ -1,4 +1,4 @@
-![teate_logo](https://teate.co/wp-content/themes/teatetheme/images/logo.png) ![ds4a_logo]((https://github.com/Mrjarkos/DS4A_Project/tree/main/assets/img/ds4A-logo.png?raw=true))
+![](https://teate.co/wp-content/themes/teatetheme/images/logo.png) ![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/ds4A-logo.png?raw=true)
 
 
 # Teaté Colombia S.A.S
@@ -62,8 +62,10 @@ plotly-dash-multipage-template
 ```
 ### Application Overview
 *FORECAST*  
-![Forecast](https://github.com/Mrjarkos/DS4A_Project/tree/main/assets/img/forecast.png?raw=true)
+![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/forecast.png?raw=true)
+
 *STORE ANALYSIS*  
-![Store](https://github.com/Mrjarkos/DS4A_Project/tree/main/assets/img/store.png?raw=true)
+![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/store.png?raw=true)
+
 *PRODUCT ANALYSIS*  
-![Product](https://github.com/Mrjarkos/DS4A_Project/tree/main/assets/img/product.png?raw=true)
+![](https://raw.githubusercontent.com/Mrjarkos/DS4A_Project/tree/main/assets/img/product.png?raw=true)
