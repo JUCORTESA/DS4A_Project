@@ -74,7 +74,7 @@ layout = html.Div(
                                     className="H5_margin",
                                 ),
                                 html.H5(
-                                    "MSc Business Analytics | Industrial Engineer | Data Science",
+                                    "MSc Business Analytics | Industrial Engineer",
                                     className="P_margin",
                                 ),
                                 dbc.Button(
