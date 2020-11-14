@@ -130,12 +130,12 @@ def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
                 centro = 3000
             query = query + ' AND h.ce = ' + str(centro)
 
-        if manufacturer is not None and len(manufacturer) > 0:
+        if manufacturer is not None:
             query = query + ' AND h.fabricante = ' + str(manufacturer)
 
         if cat is not None:
             query = query + ' AND c.jerarquia_productos = ' + str(cat)
-        if sub_cat is not None and len(sub_cat) > 0:
+        if sub_cat is not None:
             query = query + ' AND c.subcategoria = ' + str(sub_cat)
 
         df = run_query(query + " group by c.material, c.Texto_breve_de_material1 order by cantidad DESC limit 10", engine)
