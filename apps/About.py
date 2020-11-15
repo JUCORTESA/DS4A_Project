@@ -236,7 +236,7 @@ layout = html.Div(
                         dbc.Col(
                             [
                                 html.Img(
-                                    src=app.get_asset_url("img/paola.jpg"),
+                                    src=app.get_asset_url("img/paola.jpeg"),
                                     height="250px",
                                     className="img_marg",
                                     style={"border-radius": "600px"}
@@ -261,7 +261,7 @@ layout = html.Div(
                                     size="lg",
                                     color="primary",
                                     className="In_marg",
-                                    href="",
+                                    href="https://www.linkedin.com/in/paola-andrea-urue%C3%B1a-pineda-8b0aab27/",
                                 ),
                             ], style={"text-align": "center"}
                         ),

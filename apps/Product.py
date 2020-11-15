@@ -7,8 +7,9 @@ from dash.dependencies import Input, Output
 from data import run_query, engine
 import plotly.express as px
 
-city_lbl = ["CALI", "MEDELLIN"]
 
+# Lists to be displayed on the dropdown
+city_lbl = ["CALI", "MEDELLIN"]
 prod_cat_lbl = run_query("select MIN(jerarquia_productos), nombre_cat from categorias group by nombre_cat",
                          engine).dropna()
 product_type = []
@@ -31,7 +32,7 @@ content = html.Div(
                  dbc.Col(html.H5("Manufacturer")),
                  dbc.Col(html.H5("Subcategory")),
                  ]),
-
+        # Dropdown with filters to plot the figure
         dbc.Row(
             [
                 dbc.Col(dcc.Dropdown(id="city", options=[{'label': i, 'value': i} for i in city_lbl],
@@ -75,6 +76,7 @@ layout = html.Div(children=[
 
 @app.callback(Output('manufacturer', 'options'), [Input('product category', 'value')])
 def update_manufacturers_list(product_type):
+    """Take the product category and return a dictionary with the manufacturers available to just that category"""
     options = []
 
     try:
@@ -92,6 +94,7 @@ def update_manufacturers_list(product_type):
 
 @app.callback(Output('product sub-category', 'options'), [Input('product category', 'value'), Input('manufacturer', 'value')])
 def update_prod_list(product_type, manufacturer):
+    """Take the filterer manufacturer and return a dictionary with the product subcategories"""
     options = []
 
     try:
@@ -119,6 +122,7 @@ def update_prod_list(product_type, manufacturer):
                Input('product category', 'value'),
                Input('product sub-category', 'value')])
 def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
+    """function to generate a product graph with the given inputs"""
     try:
 
         query = "select SUM(cantidad_pedido) as cantidad, c.Texto_breve_de_material1 from historicopedidos h left join tiendas t on h.tienda = t.tienda left join categorias c on h.Material = c.Material WHERE Valor_TotalFactura >0 AND Fecha_Pedido >= " + "\'" + start_date + "\'" + " AND Fecha_Pedido < " + "\'" + end_date + "\'" + ""
@@ -153,6 +157,7 @@ def update_graph(start_date, end_date, city, manufacturer, cat, sub_cat):
                Input('product category', 'value'),
                Input('product sub-category', 'value')])
 def update_moneygraph(start_date, end_date, city, manufacturer, cat, sub_cat):
+    """function to generate a product income graph with the given inputs"""
     query = "select SUM(Valor_TotalFactura) as ventas, c.Texto_breve_de_material1 from historicopedidos h left join tiendas t on h.tienda = t.tienda left join categorias c on h.Material = c.Material WHERE Valor_TotalFactura >0 AND Fecha_Pedido >= " + "\'" + start_date + "\'" + " AND Fecha_Pedido < " + "\'" + end_date + "\'" + ""
 
     if city is not None:

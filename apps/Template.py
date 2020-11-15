@@ -1,11 +1,11 @@
 import dash_bootstrap_components as dbc
 import dash_html_components as html
-import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 from app import app
 
 
 def template(content, pagename):
+    """Generate the different components of the app view"""
     sidebar = Sidebar(pagename)
     topbar = Topbar()
     footer = Footer()
@@ -19,6 +19,7 @@ def template(content, pagename):
         ])
 
 def Footer():
+    """Footer message to display"""
     return html.Div(className="container-fluid", children=[
             html.Nav(className="pull-left", children=[
 
@@ -35,6 +36,7 @@ def Footer():
 
 
 def Sidebar(pagename):
+    """Function that display a sidebar to redirect to different views from the app"""
     pagenames = ["Home", "Store", "Geolocation", "Forecast", "Product", "About"]
     classnames = ["" for page in pagenames]
     classnames[pagenames.index(pagename)] = "active"
@@ -105,11 +107,13 @@ def Sidebar(pagename):
     [State("collapse", "is_open")],
 )
 def toggle_collapse(n, is_open):
+    """Function to activate the collapse button of the sidebar"""
     if n:
         return not is_open
     return is_open
 
 def Topbar():
+    """Top text to be display on the views"""
     topbar =  html.Nav(className="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent",
         children=[
             html.Div(className="container-fluid", children=[
@@ -145,6 +149,7 @@ def Topbar():
     [State("sidebar-toggle", "className")],
 )
 def toggle_classname(n, classname):
+    """sidebar navbar"""
     if classname == "navbar-toggler":
          return "navbar-toggler toggled"
     return "navbar-toggler"
@@ -159,4 +164,3 @@ def toggle_classname(n, classname):
     if classname == "wrapper":
          return "wrapper nav-open"
     return "wrapper"
-

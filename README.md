@@ -14,6 +14,10 @@ In order to run the app locally, you need to install all the Python libraries ne
 ```
 pip install -r requirements.txt
 ```
+Install gdal to view maps
+```
+sudo apt -y install gdal-bin python3-gdal
+```
 Finally run the application by running:
 ```
 python3 index.py

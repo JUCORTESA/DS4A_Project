@@ -1,6 +1,6 @@
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
+
 # local imports
 from app import app
 
@@ -12,13 +12,9 @@ layout = html.Div([
     html.Img(src=app.get_asset_url(HEADER_IMAGE), style={
         'background-image': 'url("/assets/img/medellin.jpg")',
         'opacity': '0.6',
-        '-ms-background-size': 'contain',
         'padding': '100px',
-        'background-repeat': 'no-repeat',
         'background-size': 'cover',
         'background-position': 'center',
-        'width': '100%',
-        'height': 'auto',
         'display': 'block'
     }),
     # title
@@ -51,13 +47,7 @@ layout = html.Div([
             className="mb-5 mt-0 p-0")
     ], style={'padding': '0', 'margin': '0'}),
 
-    # upload bottom
-    # dbc.Row([dcc.Upload(id='upload-data',
-    #                    children=html.Button('Upload File')),
-    #         ], style={'padding': '0', 'margin': '0'},
-    #       className="mb-5", justify="center"),
-
-    # Cards to link to prediction and graphs
+    # Card image to redirect to specified view from home
     dbc.Row([
 
         dbc.Col(dbc.Card(children=[
@@ -67,9 +57,7 @@ layout = html.Div([
                 className="text-center"),
 
             dbc.Button(
-            html.Span([html.I(
-               className=""),
-                      "Store Analysis"]),
+                html.Span([html.I(className=""), "Store Analysis"]),
                 href="/store",
                 target="_blank",
                 color="success",
@@ -123,8 +111,6 @@ layout = html.Div([
 
         ], body=True, color="dark", outline=True)
             , width=3, className="mb-3"),
-
-
 
     ], style={'padding': '0', 'margin': 'auto'},
         className="mb-5", justify="center"),

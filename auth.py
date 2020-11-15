@@ -4,7 +4,8 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from flask import session
 
-# users dict
+# Authentication user and password
+# change and add users inside the dictionary as required
 users = {
     'ds4a': 'group68'
 }
@@ -12,7 +13,9 @@ users = {
 def authenticate_user(credentials):
     """
     generic authentication function
-    returns True if user is correct and False otherwise
+
+    :param credentials: dictionary with user and password
+    :return: True if user is correct and False otherwise
     """
     authed = (credentials['user'] in users) and (credentials['password'] == users[credentials['user']])
 
@@ -20,9 +23,9 @@ def authenticate_user(credentials):
 
 def validate_login_session(f):
     """
-    takes a layout function that returns layout objects
     checks if the user is logged in or not through the session.
-    If not, returns an error with link to the login page
+    :param f: a layout function
+    :return: layout objects. If not, returns an error with link to the login page
     """
     @wraps(f)
     def wrapper(*args,**kwargs):

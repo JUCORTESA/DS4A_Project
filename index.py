@@ -4,13 +4,11 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 from dash import no_update
 from flask import session
-import codecs
 
 # local imports
 from auth import authenticate_user, validate_login_session
 from app import app, server
 from apps import Home, Geolocation, Forecast, Store, Product, About, Template
-from scripts.utils import my_dash_components as mydbc
 
 
 ###############################################################################
@@ -169,4 +167,4 @@ def logout_(n_clicks):
     return '/login'
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True)

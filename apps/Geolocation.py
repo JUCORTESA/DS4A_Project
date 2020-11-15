@@ -100,7 +100,6 @@ def update_graph(start_date, end_date, city, manu, cat, sub_cat, Chart):
 
             location = citylocation[city]
             geodata  = geopandas.read_file(f"models/Geolocation/geojson_data/Comunas_{city}.geojson", driver = "GeoJSON")
-
             if Chart=='Stores Location':
                 query = f"""SELECT SUM(cantidad_pedido) as cantidad, T.tienda, SUM(h.valor_totalfactura) as ventas,
                         T.latitud, T.longitud, T.nombre_tienda, T.fecha_creacion, T.direccion_tienda,
