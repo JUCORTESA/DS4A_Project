@@ -95,8 +95,8 @@ def update_graph(start_date, end_date, city, manu, cat, sub_cat, Chart):
             print("Chart Type is not selected")
             #raise Exception("Chart Type is not selected")
         else:        
-            start_date = '{:%x}'.format(date.fromisoformat(start_date.replace("/", "-")))
-            end_date = '{:%x}'.format(date.fromisoformat(end_date.replace("/", "-")))
+            # start_date = '{:%x}'.format(date.fromisoformat(start_date.replace("/", "-")))
+            # end_date = '{:%x}'.format(date.fromisoformat(end_date.replace("/", "-")))
 
             location = citylocation[city]
             geodata  = geopandas.read_file(f"models/Geolocation/geojson_data/Comunas_{city}.geojson", driver = "GeoJSON")
@@ -108,8 +108,8 @@ def update_graph(start_date, end_date, city, manu, cat, sub_cat, Chart):
                         left join tiendas t on h.tienda = t.tienda
                         left join categorias c on h.Material = c.Material
                         WHERE Valor_TotalFactura > 0
-                        AND Fecha_Pedido >= DATE '{start_date}' 
-                        AND Fecha_Pedido < DATE '{end_date}'
+                        -- AND Fecha_Pedido >= DATE '{start_date}' 
+                        -- AND Fecha_Pedido < DATE '{end_date}'
                         AND T.ciudad_tienda= '{city}'"""
 
                 if manu is not None and not manu=="":
